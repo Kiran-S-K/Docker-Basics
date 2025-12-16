@@ -22,4 +22,7 @@ Resources of the system is used by container and not image.
 -docker ps -a (lists all container ID, images and info, -if docker ps is used then it shows only the running containers)  
 -docker rmi IMAGE_NAME (removes or destroys an image)  
 -docker rm CONT_NAME (removes or destroys a container)  
+-docker pull IMAGE_NAME:version  
+-docker run -d IMAGE_NAME (d-detach mode, normally all containers run in attach mode)  
+-docker run --name CONT_NAME -d IMAGE_NAME (to create custom name for container)  
 

@@ -25,4 +25,28 @@ Resources of the system is used by container and not image.
 -docker pull IMAGE_NAME:version  
 -docker run -d IMAGE_NAME (d-detach mode, normally all containers run in attach mode)  
 -docker run --name CONT_NAME -d IMAGE_NAME (to create custom name for container)  
+## Port Binding
+Port binding connects a port inside a container to a port on your computer (host).  
+Containers are isolated.  
+Services inside them are not accessible unless you bind ports.  
+# You do NOT need port binding when:  
+-You are just running a container  
+You are:  
+-Executing commands inside it  
+-Using it as a tool (Ubuntu, Python, Node, etc.)  
+-Not exposing a service to the outside  
+Ex: docker run -it ubuntu  
+# Command for port binding:
+-docker run -p HOST_PORT:CONTAINER_PORT IMAGE_NAME   
+# NOTE: 
+Once a container is bound to a host port(for ex:8080) another container cannot be given the same host port.  
+## Troubleshoot Commands
+-docker logs CONT_ID (gives logs of a specific container so that we can identify any probelm related to it)  
+-docker exec -it CONT_ID/bin/bash (exec lets us run commands on an alerady running container)  
+-docker exec -it CONT_ID/bin/sh  
+# NOTE:
+In gitbash terminal use these as the commands above wont run.  
+-docker exec -it CONT_ID "bash"  
+-docker exec -it CONT_ID "sh"  
+Then use 'env' to display the details and use 'exit' to exit the command.  
 

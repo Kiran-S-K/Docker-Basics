@@ -49,4 +49,20 @@ In gitbash terminal use these as the commands above wont run.
 -docker exec -it CONT_ID "bash"  
 -docker exec -it CONT_ID "sh"  
 Then use 'env' to display the details and use 'exit' to exit the command.  
+## Developing with docker 
+# docker network
+Docker network is a virtual network that lets container talk to each other
+docker network ls  
+docker network create NETWORK_NAME  
 
+So now we will use an example of mongoDB for docker network.  
+For pulling or running mongoDB image, we need:  
+-to run in detach mode (-d)  
+-port binding to the specific port given in the docker hub (27017) [-p 27017:27017]  
+-then some nickname (--name mongo)  
+-then we need it to run inside our isolated network (--network mongo-netowrk)  
+
+Then some environment variables -e :  (we will use name as admin and password as qwerty for this example)  
+-e ROOT_USER_NAME=admin  
+-e ROOT_PASSWORD=qwerty  
+  

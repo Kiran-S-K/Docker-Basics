@@ -65,4 +65,77 @@ For pulling or running mongoDB image, we need:
 Then some environment variables -e :  (we will use name as admin and password as qwerty for this example)  
 -e ROOT_USER_NAME=admin  
 -e ROOT_PASSWORD=qwerty  
-  
+
+Built a custom Node.js Docker image using an official Node base image, containerized an Express server, exposed port 5050, and connected it to MongoDB using Docker networking.  
+Your project must look like this:  
+docker-testapp/
+├── server.js
+├── package.json
+├── package-lock.json
+├── node_modules/        
+├── public/
+└── Dockerfile
+
+
+Then create a dockerfile which contains:  
+# Use official Node.js image
+FROM node:18-alpine  
+
+# Set working directory inside container
+WORKDIR /app  
+
+# Copy package files first (for caching)
+COPY package*.json ./  
+
+# Install dependencies
+RUN npm install  
+
+# Copy rest of the application
+COPY . .  
+
+# Expose the port your app runs on
+EXPOSE 5050  
+
+# Start the application
+CMD ["node", "server.js"]  
+Then build the docker image:  
+docker build -t node-app . (-t is to name an image, "." current directory as build context)  
+# If any old container exists with same name:
+docker rm node-app or docker remove -f node-app  
+Then run the container and put it to local network(mongo-network)  
+docker run -d \  
+  --name node-app \  
+  --network mongo-network \  
+  -p 5050:5050 \  
+  node-app  
+Then finally test api in browser whether its running or not:  
+http://localhost:5050/getUsers  
+# Docker compose
+It is a tool for defining and running multi-container applications.  
+We run the container from a file which has .yaml(yet another markup language) extension instead of running on terminal. 
+# NOTE: In yaml file all the containers are by default in the same network, so no need of explicitly mentioning the network.
+Now lets take the example of mongo container:  
+_In terminal_:  
+docker run -d \  
+-p 27017:27017 \  
+--name mongo \  
+--network mongo-network \  
+-e MONGO_INITDB_ROOT_USERNAME=admin \  
+-e MONGO_INITDB_ROOT_PASSWORD=qwerty \  
+mongo  
+_*But in yaml file, ex: compose.yaml*_  
+version: "3.8" //You can skip this too but for specific version cant  
+services: *all containers 
+  mongo:  
+    image: mongo  
+    ports:  
+      -27017:27017  
+    environment:  
+       MONGO_INITDB_ROOT_USERNAME:admin  
+       MONGO_INITDB_ROOT_PASSWORD:qwerty  
+# NOTE: Idendation is important in yaml file  
+_*2 important docker compose commands*_  
+docker compose -f fileName.yaml up -d (up = run+start)  
+docker compose -f fileName.yaml down (down = stop + rm)  
+
+

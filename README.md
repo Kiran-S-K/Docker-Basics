@@ -137,5 +137,25 @@ services: *all containers
 _*2 important docker compose commands*_  
 docker compose -f fileName.yaml up -d (up = run+start)  
 docker compose -f fileName.yaml down (down = stop + rm)  
+## Dockerizing our app
+It is the process of packaging an application and its environment into an image from which we can form containers and run consistently on any device whihch has docker.  
+So, an important term related to dockerization:  
+# Dockerfile 
+A text file which contains step by step instructions to build a docker image.  
+_*Important dockerfile instructions*_  
+-FROM: Every image we build is based on a base image.FROM specifies the base images on which my Docker image is built.Base image is a pre-built docker image that contains OS,runtime,npm,system libraries.  
+*Syntax*: FROM base_image:version , FROM python:3.11  
+-WORKDIR: Sets the current working directory for the container, its like using cd command. If WORKDIR /app then docker assumes every command runs inside /app. If no workdir then docker assumes (cd ..) which is root directory which is bad and messy and dangerous.  
+-COPY: copies the files from machine into the current directory of the container. (COPY . .) means first . -> current folder on host copied to second . -> current folder inside container (ex: WORKDIR /app)  
+-RUN: It executes a command while the image is being built and saves the result into the image. _Important_: RUN command runs the command during build time and then freeze the result into the image.Can have multiplr RUN commands.  
+-CMD: Defines what runs during container starts.CMD runs at runtime and not during buildtime.Can have only one CMD per dockerfile.(Mental mode: After everything is built, start the app like this.)  
+-EXPOSE: Documents which port the app listens on.  
+(EXPOSE 5050)  
+VERY IMPORTANT  
+-Does NOT open the port (actual port opening happens via: [docker run -p 5050:5050])  
+-Does NOT publish the port  
+-Just documentation for Docker & Compose  
+(Mnetal mode: Putting a label on door saying,this service talks on port 5050)  
+-ENV: Sets environment variables inside the container.   
 
 

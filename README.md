@@ -157,5 +157,19 @@ VERY IMPORTANT
 -Just documentation for Docker & Compose  
 (Mnetal mode: Putting a label on door saying,this service talks on port 5050)  
 -ENV: Sets environment variables inside the container.   
-
-
+# Docker volumes
+Volumes are persistent data stores for containers.  
+-v host_path:container_path (both the paths must be absolute, i.e full path starting from root)  
+## You can create custom volumes:
+-docker volume create vol_name (to create volume,these are named volumes) *[by default the volumes are created in C:\ProgramData\docker\volumes] as we do not mention the location*  
+-docker volume rm vol_name (to remove volume)  
+-docker volume ls (to see all created volumes)  
+_custom docker volumes which are created are not attached with any containers_  
+# *So to attach the container with the container we use:*  
+_For named volumes:_  
+- docker run -v vol_name:cont_directory (if vol_name doesnt exists, docker auto creates the volume and runs)  
+_For anonymous volumes:_  
+- docker run -v mount_path  
+_For bind mount:_  
+- docker run -v host_directory:cont_directory  
+-docker volume prune (it prunes all anonymous volumes and volumes which are not attached to any containers)  
